@@ -173,6 +173,8 @@ class Trie(DictMixin, object):
           - if ``default`` is given, return it
           - otherwise raise ``KeyError``
         '''
+        index = prefix_not_null_index = 0
+        prefix_not_null_node_value = NULL
         prefix = [];
         append = prefix.append
         node = self._root
@@ -181,9 +183,15 @@ class Trie(DictMixin, object):
             if next is None:
                 break
             append(part)
+            if node.value is not NULL:
+                prefix_not_null_index = index
+                prefix_not_null_node_value = node.value
             node = next
+            index += 1
         if node.value is not NULL:
             return (self.KeyFactory(prefix), node.value)
+        elif prefix_not_null_node_value is not NULL:
+            return (self.KeyFactory(prefix[0:prefix_not_null_index]), prefix_not_null_node_value)
         elif default is not NULL:
             return default
         else:
