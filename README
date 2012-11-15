@@ -1,5 +1,0 @@
-This code is forked from https://bitbucket.org/gsakkis/pytrie
-
-This fork fixes a bug in the above code that manifests in the test case shown in test_longest_prefix_item_with_micro_prefix_overlaps().
-
-If the trie is made from strings ('c', 'cex') and the query is 'cey', the longest matching prefix from the given set is 'c'. The earlier code did a 'greedy' match for 'cey' and traversed the trie till 'ce', found no corresponding trie entry, and returned in a KeyError. The required solution is to return 'c' instead. The patch stores the longest previouly encountered non-null values in case all future probes are futile.

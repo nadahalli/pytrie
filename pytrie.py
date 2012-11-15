@@ -152,18 +152,11 @@ class Trie(DictMixin, object):
           - if ``default`` is given, return it
           - otherwise raise ``KeyError``
         '''
-        node = self._root
-        for part in key:
-            next = node.children.get(part)
-            if next is None:
-                break
-            node = next
-        if node.value is not NULL:
-            return node.value
-        elif default is not NULL:
-            return default
-        else:
-            raise KeyError
+        try: return self.longest_prefix_item(key)[1]
+        except KeyError:
+            if default is not NULL:
+                return default
+            raise
     
     def longest_prefix_item(self, key, default=NULL):
         '''Return the item (``(key,value)`` tuple) associated with the longest
